@@ -22,3 +22,4 @@ export const FETCH_CHAT = 'FETCH_CHAT';
 export const SEND_MESSAGE = 'SEND_MESSAGE';
 export const CHAT_WITH_ID = 'CHAT_WITH_ID';
 export const CHAT_UNMOUNT = 'CHAT_UNMOUNT';
+export const REPORT_NOTIFICATION = 'REPORT_NOTIFICATION';

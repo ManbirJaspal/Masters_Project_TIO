@@ -29,7 +29,7 @@ class GroupList extends React.Component {
         <p>{group.group_description}</p>
       </div>
       <div class="extra content">
-        <span>created by:      {group.group_user_id}</span>
+        <span>created by: {group.group_user_id}</span>
 
       </div>
            </div>

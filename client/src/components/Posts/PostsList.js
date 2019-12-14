@@ -2,7 +2,7 @@ import React from "react";
 import PostItem from "./PostItem";
 import PostCreate from './PostCreate';
 import { connect } from "react-redux";
-import { fetchPosts,clearPosts } from '../../actions';
+import { fetchPosts,clearPosts, reportNotification } from '../../actions';
 import { Link } from 'react-router-dom';
 import style from '../../style/style.css';
 
@@ -18,6 +18,10 @@ class PostsList extends React.Component {
     this.props.clearPosts();
   }
 
+
+  reportNotification = () => {
+    this.props.reportNotification(this.props.match.params.id);
+  }
   renderAdmin = (post) => {
     console.log("Inside renderADMIN () IN postList");
     console.log(post.post_user_id, this.props.currentUserId);
@@ -39,7 +43,7 @@ class PostsList extends React.Component {
     if(this.props.mod === true && post.alert === "true") {
       return (
         <div className="right floated content">
-          <Link to={`/posts`} className="ui button primary">
+          <Link to={`/posts`} className="ui button" style={{color: "red"}}>
             Alert
           </Link>
         </div>
@@ -64,6 +68,7 @@ class PostsList extends React.Component {
                <div class="extra content">
                  <span>Posted by:      {post.post_user_id}</span>
                </div>
+               <button onClick={this.reportNotification}>Report</button>
 
              </div>
            </div>
@@ -112,4 +117,4 @@ class PostsList extends React.Component {
   };
 
 
-export default connect(mapStateToProps, { fetchPosts, clearPosts })(PostsList);
+export default connect(mapStateToProps, { fetchPosts, clearPosts, reportNotification  })(PostsList);

@@ -35,9 +35,6 @@ class PostDelete extends React.Component {
       return 'Are you sure you want to delete this post?';
     }
 
-    return `Are you sure you want to delete the post with title: ${
-      this.props.post["title"]
-    }`;
   }
 
   render() {

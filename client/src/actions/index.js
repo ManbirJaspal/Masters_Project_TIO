@@ -25,6 +25,7 @@ import {
   SEND_MESSAGE,
   CHAT_WITH_ID,
   CHAT_UNMOUNT,
+  REPORT_NOTIFICATION,
 
 } from './types';
 
@@ -146,6 +147,23 @@ export const editGroup = (id, formValues) => async dispatch => {
 
 // ****************************************************************************
 
+export const reportNotification = (title) => async (dispatch) => {
+  console.log("inside report notification actions");
+
+  const reportNotification_Data = qs.stringify({
+    title: title
+  });
+
+  await axios.post(url + "send", reportNotification_Data)
+  .then(response => {
+    console.log('email notification sent to moderator');
+    console.log(response.data);
+  },
+  function(error) {
+    console.log(error)
+  }
+);
+}
 
 // POST RELATED ACTIONS
 
@@ -242,6 +260,7 @@ export const deletePost = (id) => async dispatch => {
     post_id: id }
   })
   .then(response => {
+
     dispatch({
       type: DELETE_POST,
       payload: id
@@ -249,7 +268,7 @@ export const deletePost = (id) => async dispatch => {
     history.push('/groups');
   }, function(error) {
     console.log(error);
-  });
+  })
 }
 
 export const clearPosts = () => (dispatch) => {

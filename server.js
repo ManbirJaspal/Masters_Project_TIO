@@ -7,7 +7,7 @@ var fs = require('fs');
 var bcrypt = require('bcrypt');
 const saltRounds = 10;
 var cookieParser = require('cookie-parser');
-
+var nodemailer = require('nodemailer');
 
 const app = express();
 const port = 8082;
@@ -17,8 +17,8 @@ var session = require('express-session');
 
 var hosts = ['http://localhost:3000'].join(', ');
 
-var substrings = ["one", "two", "three", "kill", "i am going to kill", "depression", "I am depressed", "i am going to suicide", "suicide", "kill", "shoot", "shoot myself", "help",
-"need help", "dropping out", "dropping out of school", "failing my class", "sexually harassed", "stalker", "bullying"];
+var substrings = ["kill", "i am going to kill", "depression", "I am depressed", "i am going to suicide", "suicide", "kill", "shoot", "shoot myself", "help",
+"need help", "dropping out", "dropping out of school", "failing my class", "sexually harassed", "stalker", "bullying", "need of help","stalked"];
 
 const pool = new Pool({
   user: 'sahibjaspal',
@@ -69,43 +69,85 @@ app.get('/comments', getComments);
 app.post('/comments', createComment);
 app.post('/chaton', sendMessage);
 app.get('/getmessages', getChat);
+app.post('/send', reportNotification);
+
+
+
 
 
 
 //*****************************************************************************
+async function reportNotification(request, response){
+  // create reusable transporter object using the default SMTP transport
+  console.log("inside reportNotification server.js");
+  var title = "group number" + request.body.title;
+  console.log(title);
+    let transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        secure: false,
+        port: 587,
+        auth: {
+        user: "your_email",
+        pass: "your_password"
+      },
+        tls: {
+            rejectUnauthorized: false
+        }
+    });
 
-//Random Username generator
+    // setup email data with unicode symbols
+    let mailOptions = {
+        from: '"anonymous student" <"email"', // sender address
+        to: 'your_email', // list of receivers
+        subject: 'A Post has been reported on TIO', // Subject line
+        text: 'Post has been reported in group number ' + title + ' on TIO', // plain text body
 
-function haiku(){
-  var adjs = ["autumn", "hidden", "bitter", "misty", "silent", "empty", "dry",
-  "dark", "summer", "icy", "delicate", "quiet", "white", "cool", "spring",
-  "winter", "patient", "twilight", "dawn", "crimson", "wispy", "weathered",
-  "blue", "billowing", "broken", "cold", "damp", "falling", "frosty", "green",
-  "long", "late", "lingering", "bold", "little", "morning", "muddy", "old",
-  "red", "rough", "still", "small", "sparkling", "throbbing", "shy",
-  "wandering", "withered", "wild", "black", "young", "holy", "solitary",
-  "fragrant", "aged", "snowy", "proud", "floral", "restless", "divine",
-  "polished", "ancient", "purple", "lively", "nameless"]
+    };
 
-  , nouns = ["waterfall", "river", "breeze", "moon", "rain", "wind", "sea",
-  "morning", "snow", "lake", "sunset", "pine", "shadow", "leaf", "dawn",
-  "glitter", "forest", "hill", "cloud", "meadow", "sun", "glade", "bird",
-  "brook", "butterfly", "bush", "dew", "dust", "field", "fire", "flower",
-  "firefly", "feather", "grass", "haze", "mountain", "night", "pond",
-  "darkness", "snowflake", "silence", "sound", "sky", "shape", "surf",
-  "thunder", "violet", "water", "wildflower", "wave", "water", "resonance",
-  "sun", "wood", "dream", "cherry", "tree", "fog", "frost", "voice", "paper",
-  "frog", "smoke", "star"];
+    // send mail with defined transport object
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.log("inside error nodemailer");
+            return console.log(error);
+        }
+        console.log('Message sent: %s', info.messageId);
+    });
+};
 
-  return adjs[Math.floor(Math.random()*(adjs.length-1))]+"_"+nouns[Math.floor(Math.random()*(nouns.length-1))];
-}
+async function alertNotification(PostTitle){
+  // create reusable transporter object using the default SMTP transport
+  console.log("inside alertNotification server.js");
+    let transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        secure: false,
+        port: 587,
+        auth: {
+        user: "your_email",
+        pass: "your_password"
+      },
+        tls: {
+            rejectUnauthorized: false
+        }
+    });
 
-//*****************************************************************************
+    // setup email data with unicode symbols
+    let mailOptions = {
+        from: '"anonymous student" <manb.jaspal@gmail.com', // sender address
+        to: 'manb.jaspal@gmail.com', // list of receivers
+        subject: 'An Alert has been generated on TIO', // Subject line
+        text: 'Alert generated on Post with Title: ' + PostTitle + ' on TIO', // plain text body
 
+    };
 
-
-//*****************************************************************************
-
+    // send mail with defined transport object
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.log("inside error nodemailer");
+            return console.log(error);
+        }
+        console.log('Message sent: %s', info.messageId);
+    });
+};
 
 //LOGIN AND REGISTER FUNCTIONS
 
@@ -144,19 +186,6 @@ function createStudent(request, response){
   })
 }
 
-// async function hashPassword(pass) {
-//
-//   var password = pass;
-//
-//   const hashedPassword = await new Promise((resolve, reject) => {
-//     bcrypt.hash(password, saltRounds, function(err, hash) {
-//       if (err) reject(err)
-//       resolve(hash)
-//     });
-//   })
-//
-//   return hashedPassword
-// }
 
 function studentLogin(request, response){
   console.log("inside StudentLogin()");
@@ -211,17 +240,11 @@ function studentLogin(request, response){
             if(res1 == true) {
                 console.log("inside login bycrypt res1");
 
-            // bcrypt.compare(student_a_id, hash2, function(err2, res2) {
-            //   if(res2 == true) {
                 console.log("inside login bycrypt res2");
                 console.log(JSON.stringify(results.rows));
                 response.status(200).send(results.rows);
                 console.log("Login SUCCESSFULL");
-            //   }
-            //    else {
-            //     console.log("Anonymous_id incorrect");
-            //   }
-            // });
+
           }  else {
             console.log("Password incorrect");
           }
@@ -253,9 +276,7 @@ function createPost(request,response) {
   str = description
   if (substrings.some(function(v) { return str.indexOf(v) >= 0; })) {
     alert = 'true';
-
-  } if (substrings.some(function(v) { return str.indexOf(v) >= 0; })) {
-    alert ='true';
+    alertNotification(title);
   }
     else {
     alert = null;
