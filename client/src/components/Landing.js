@@ -17,16 +17,8 @@ import CommentEdit from './comments/CommentEdit';
 import CommentCreate from './comments/CommentCreate';
 import MessageForm from './chat/MessageForm';
 import Chat from './chat/Chat';
-
-
-
-
 import GroupCreate from './groups/GroupCreate';
 import GroupEdit from './groups/GroupEdit';
-
-
-
-
 
 const Landing = () => {
   return(
@@ -56,7 +48,7 @@ const Landing = () => {
         </div>
       </Router>
     </div>
-        );
-        };
+  );
+};
 
 export default Landing;

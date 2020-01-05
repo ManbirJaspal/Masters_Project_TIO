@@ -13,8 +13,6 @@ const app = express();
 const port = 8082;
 
 var session = require('express-session');
-
-
 var hosts = ['http://localhost:3000'].join(', ');
 
 var substrings = ["kill", "i am going to kill", "depression", "I am depressed", "i am going to suicide", "suicide", "kill", "shoot", "shoot myself", "help",
@@ -52,7 +50,6 @@ app.use(function(request, response, next) {
   next();
 });
 
-
 app.post('/student', createStudent);
 app.post('/login', studentLogin);
 app.get('/groups', getGroups);
@@ -71,86 +68,79 @@ app.post('/chaton', sendMessage);
 app.get('/getmessages', getChat);
 app.post('/send', reportNotification);
 
-
-
-
-
-
 //*****************************************************************************
 async function reportNotification(request, response){
   // create reusable transporter object using the default SMTP transport
   console.log("inside reportNotification server.js");
   var title = "group number" + request.body.title;
   console.log(title);
-    let transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        secure: false,
-        port: 587,
-        auth: {
-        user: "your_email",
-        pass: "your_password"
-      },
-        tls: {
-            rejectUnauthorized: false
-        }
-    });
+  let transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    secure: false,
+    port: 587,
+    auth: {
+      user: "your_email",
+      pass: "your_password"
+    },
+    tls: {
+      rejectUnauthorized: false
+    }
+  });
 
-    // setup email data with unicode symbols
-    let mailOptions = {
-        from: '"anonymous student" <"email"', // sender address
-        to: 'your_email', // list of receivers
-        subject: 'A Post has been reported on TIO', // Subject line
-        text: 'Post has been reported in group number ' + title + ' on TIO', // plain text body
+  // setup email data with unicode symbols
+  let mailOptions = {
+    from: '"anonymous student" <"email"', // sender address
+    to: 'your_email', // list of receivers
+    subject: 'A Post has been reported on TIO', // Subject line
+    text: 'Post has been reported in group number ' + title + ' on TIO', // plain text body
+  };
 
-    };
-
-    // send mail with defined transport object
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          console.log("inside error nodemailer");
-            return console.log(error);
-        }
-        console.log('Message sent: %s', info.messageId);
-    });
+  // send mail with defined transport object
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log("inside error nodemailer");
+      return console.log(error);
+    }
+    console.log('Message sent: %s', info.messageId);
+  });
 };
 
 async function alertNotification(PostTitle){
   // create reusable transporter object using the default SMTP transport
   console.log("inside alertNotification server.js");
-    let transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        secure: false,
-        port: 587,
-        auth: {
-        user: "your_email",
-        pass: "your_password"
-      },
-        tls: {
-            rejectUnauthorized: false
-        }
-    });
+  let transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    secure: false,
+    port: 587,
+    auth: {
+      user: "your_email",
+      pass: "your_password"
+    },
+    tls: {
+      rejectUnauthorized: false
+    }
+  });
 
-    // setup email data with unicode symbols
-    let mailOptions = {
-        from: '"anonymous student" <manb.jaspal@gmail.com', // sender address
-        to: 'manb.jaspal@gmail.com', // list of receivers
-        subject: 'An Alert has been generated on TIO', // Subject line
-        text: 'Alert generated on Post with Title: ' + PostTitle + ' on TIO', // plain text body
+  // setup email data with unicode symbols
+  let mailOptions = {
+    from: '"anonymous student" <manb.jaspal@gmail.com', // sender address
+    to: 'manb.jaspal@gmail.com', // list of receivers
+    subject: 'An Alert has been generated on TIO', // Subject line
+    text: 'Alert generated on Post with Title: ' + PostTitle + ' on TIO', // plain text body
 
-    };
+  };
 
-    // send mail with defined transport object
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          console.log("inside error nodemailer");
-            return console.log(error);
-        }
-        console.log('Message sent: %s', info.messageId);
-    });
+  // send mail with defined transport object
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log("inside error nodemailer");
+      return console.log(error);
+    }
+    console.log('Message sent: %s', info.messageId);
+  });
 };
 
 //LOGIN AND REGISTER FUNCTIONS
-
 function createStudent(request, response){
   console.log("inside createStudent()");
   var email = request.body.email,
@@ -164,26 +154,22 @@ function createStudent(request, response){
       return response.status(400).send(err);
     }
     else {
-
       bcrypt.hash(password, saltRounds, function(err, hash1) {
         bcrypt.hash(student_a_id, saltRounds, function(err, hash2) {
-
-
-        db.query('INSERT INTO student (student_email, student_password, student_fname, student_lname, student_a_id) VALUES ($1, $2, $3, $4, $5)', [email, hash1, fname, lname, hash2], (err, table) => {
-          done();
-          if(err) {
-            return response.status(400).send(err);
-          }
-          else {
-            response.status(201).send({message: 'REGISTRATION SUCCESSFULL' });
-          }
-        })
-      }
-        );
-       });
-
-    }
-  })
+          db.query('INSERT INTO student (student_email, student_password, student_fname, student_lname, student_a_id) VALUES ($1, $2, $3, $4, $5)', [email, hash1, fname, lname, hash2], (err, table) => {
+            done();
+            if(err) {
+              return response.status(400).send(err);
+            }
+            else {
+              response.status(201).send({message: 'REGISTRATION SUCCESSFULL' });
+            }
+          })
+        }
+      );
+    });
+  }
+})
 }
 
 
@@ -192,14 +178,9 @@ function studentLogin(request, response){
   var email = request.body.email,
   password = request.body.password,
   mod = request.body.mod;
-  // student_a_id = request.body.a_id;
-
-
   var query = "";
-
   if (mod) {
     query = `SELECT * FROM moderators WHERE mod_email=$1`;
-
   } else {
     query = `SELECT * FROM student WHERE student_email=$1`;
   }
@@ -218,7 +199,6 @@ function studentLogin(request, response){
           return response.data
         }
         var hash1="";
-        // var hash2="";
         if (mod) {
           console.log(results.rows[0]);
           hash1 = results.rows[0]["mod_password"].toString();
@@ -229,26 +209,18 @@ function studentLogin(request, response){
             console.log(JSON.stringify(results.rows));
             response.status(200).send(results.rows);
             console.log(" MOD Login SUCCESSFULL");
-
           });
         } else {
           hash1 = results.rows[0]["student_password"].toString();
-          // hash2 = results.rows[0]["student_a_id"].toString();
-          console.log(hash1);
           bcrypt.compare(password, hash1, function(err1, res1) {
-            console.log(res1);
             if(res1 == true) {
-                console.log("inside login bycrypt res1");
-
-                console.log("inside login bycrypt res2");
-                console.log(JSON.stringify(results.rows));
-                response.status(200).send(results.rows);
-                console.log("Login SUCCESSFULL");
-
-          }  else {
-            console.log("Password incorrect");
-          }
-        });
+              console.log(JSON.stringify(results.rows));
+              response.status(200).send(results.rows);
+              console.log("Login SUCCESSFULL");
+            }  else {
+              console.log("Password incorrect");
+            }
+          });
         }
 
       })
@@ -262,11 +234,7 @@ function studentLogin(request, response){
 
 
 //POST RELATED FUNCTIONS
-
-
 function createPost(request,response) {
-  console.log("inside createPost");
-  console.log(request.body);
   var description = request.body.description,
   group_id = request.body.group_id,
   post_user_id = request.body.user_id,
@@ -278,11 +246,10 @@ function createPost(request,response) {
     alert = 'true';
     alertNotification(title);
   }
-    else {
+  else {
     alert = null;
   }
 
-  console.log(alert);
   pool.connect((err, db, done) => {
     if(err) {
       return response.status(400).send(err);
@@ -297,11 +264,9 @@ function createPost(request,response) {
           var str;
           str = description
           if (substrings.some(function(v) { return str.indexOf(v) >= 0; })) {
-            console.log(JSON.stringify(results.rows));
             response.status(201).send({message: 'Post insert Succesfull', alert: 'alert'});
           }
           else {
-            console.log(JSON.stringify(results.rows));
             response.status(201).send({message: 'Post insert Succesfull'});
           }
         }
@@ -311,7 +276,6 @@ function createPost(request,response) {
 }
 
 function getPosts (request, response) {
-  console.log("inside getPosts");
   const groupId = request.query.groupId;
   console.log(groupId);
   var query =`SELECT * FROM posts join groups on posts.group_id = groups.group_id where posts.group_id=${groupId}`;
@@ -324,22 +288,17 @@ function getPosts (request, response) {
 }
 
 function getPost( request, response) {
-  console.log("inside getPost server.js");
   const post_id = request.query.post_id;
-  console.log(post_id);
   var query =`SELECT * FROM posts where post_id=${post_id}`;
   pool.query(query, function(error, results) {
     if(error) {
       throw error;
     }
-    console.log((results.rows))
     response.status(200).json(results.rows)
   })
 }
 
-
 function updatePost(request, response){
-  console.log("inside upDAtePost server.js");
   var post_id = request.body.post_id,
   title = request.body.title,
   description = request.body.description;
@@ -362,8 +321,6 @@ function updatePost(request, response){
   })
 }
 
-
-
 async function deletePost(request,response) {
   console.log("inside deletePost() in server");
   console.log(request.params.post_id);
@@ -379,7 +336,6 @@ async function deletePost(request,response) {
           return response.status(400).send(err);
         }
         else {
-
           response.status(200).send({message: 'Post DELETE Succesfull'});
         }
       })
@@ -390,12 +346,8 @@ async function deletePost(request,response) {
 
 //*****************************************************************************
 
-
 //GROUP RELATED FUNCTIONS
-
-
 function getGroups (request, response) {
-  console.log("inside getgroups");
   const groupName = request.query.group_name;
   var query = "";
 
@@ -413,7 +365,6 @@ function getGroups (request, response) {
 }
 
 function getGroup( request, response) {
-  console.log("inside getGroup server.js");
   const group_id = request.query.group_id;
   console.log(group_id);
   var query =`SELECT * FROM groups where group_id=${group_id}`;
@@ -426,9 +377,7 @@ function getGroup( request, response) {
   })
 }
 
-
 function updateGroup(request, response){
-  console.log("inside upDAteGroup server.js");
   var group_id = request.body.group_id,
   group_name = request.body.group_name,
   group_description = request.body.group_description;
@@ -454,8 +403,6 @@ function updateGroup(request, response){
 }
 
 function createGroup(request,response) {
-  console.log("inside createGroup");
-  console.log(request.body);
   var group_description = request.body.group_description,
   group_user_id = request.body.user_id,
   group_moderator = 23,
@@ -472,20 +419,15 @@ function createGroup(request,response) {
           return response.status(400).send(err);
         }
         else {
-          console.log(JSON.stringify(results.rows));
           response.status(201).send({message: 'Group Insert Succesfull'});
         }
       })
     }
   })
 }
-
-
 //*****************************************************************************
 
-
 //COMMENT RELATED FUNCTIONS
-
 
 function getComments (request, response) {
   console.log("inside getComments");
@@ -529,10 +471,7 @@ function createComment(request,response) {
 
 //*****************************************************************************
 
-
 //CHAT RELATED FUNCTIONS
-
-
 function sendMessage(request,response) {
   console.log("inside ChatOn() in server");
   console.log(request.body);
@@ -540,7 +479,6 @@ function sendMessage(request,response) {
   chat_user_id = request.body.chat_user_id,
   chat_mod_id = request.body.chat_mod_id;
   created_by = request.body.created_by;
-
 
   pool.connect((err, db, done) => {
     if(err) {
@@ -562,14 +500,8 @@ function sendMessage(request,response) {
 }
 
 function getChat (request, response) {
-  console.log("inside getChat");
   const chat_user_id = request.query.chat_user_id;
   const chat_mod_id = request.query.chat_mod_id;
-
-  console.log(chat_mod_id);
-
-
-
   var query =`SELECT * FROM chats where chat_user_id=$1 and chat_mod_id=$2`;
   pool.query(query, [chat_user_id, chat_mod_id], function(error, results) {
     if(error) {

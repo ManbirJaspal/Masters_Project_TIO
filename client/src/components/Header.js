@@ -13,14 +13,9 @@ class Header extends React.Component {
     this.props.signOut();
   }
 
-  chatOnClickHandler = () => {
-    // console.log("inside chatOnClickHandler()");
-    // this.setState({chatOn: true});
-  }
   render() {
   return (
     <div className="ui container">
-
       <div className="ui inverted menu">
         <div className="header item">
           TIO

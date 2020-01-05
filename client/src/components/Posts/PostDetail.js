@@ -19,7 +19,6 @@ const PostDetail = ({comments}) => {
       </div>
       <Comments comments={comments} />
     </div>
-
   );
 }
 

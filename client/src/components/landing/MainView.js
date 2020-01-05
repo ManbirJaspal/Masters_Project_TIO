@@ -11,16 +11,16 @@ import { getGroups } from '../../actions';
 
 class MainView extends React.Component {
   state = {grpSearchTerm:'',
-            groups: [],
-            posts: [],
-            comments: [],
-            viewState: 'groups'
-            };
+    groups: [],
+    posts: [],
+    comments: [],
+    viewState: 'groups'
+  };
 
   componentDidMount() {
-      console.log(this.props);
-      this.props.getGroups();
-            }
+    console.log(this.props);
+    this.props.getGroups();
+  }
 
   renderList() {
     return this.props.groups.map(group => {
@@ -40,7 +40,6 @@ class MainView extends React.Component {
       <div>
         <h2>Groups</h2>
         <div className="ui celled list">{this.renderList()}</div>
-
       </div>
     );
   }

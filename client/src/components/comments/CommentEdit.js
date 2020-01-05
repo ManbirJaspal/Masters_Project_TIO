@@ -18,25 +18,24 @@ class CommentEdit extends React.Component {
   render() {
     if (!this.props.comment) {
       return <div>Loading...</div>;
+      }
+      return (
+        <div>
+          <h3>Edit a Stream</h3>
+          <CommentForm
+            initialValues={_.pick(this.props.comment, 'comment')}
+            onSubmit={this.onSubmit}
+            />
+        </div>
+      );
     }
-
-    return (
-      <div>
-        <h3>Edit a Stream</h3>
-        <CommentForm
-          initialValues={_.pick(this.props.comment, 'comment')}
-          onSubmit={this.onSubmit}
-        />
-      </div>
-    );
   }
-}
 
-const mapStateToProps = (state, ownProps) => {
-  return { comment: state.comments[ownProps.match.params.id] };
-};
+  const mapStateToProps = (state, ownProps) => {
+    return { comment: state.comments[ownProps.match.params.id] };
+  };
 
-export default connect(
-  mapStateToProps,
-  { fetchComment, editComment }
-)(CommentEdit);
+  export default connect(
+    mapStateToProps,
+    { fetchComment, editComment }
+  )(CommentEdit);

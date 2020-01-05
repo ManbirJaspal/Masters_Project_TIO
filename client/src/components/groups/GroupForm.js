@@ -2,20 +2,19 @@ import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 
 class GroupForm extends React.Component {
-renderError({error, touched}){
-  if (touched && error) {
-    return (
-      <div className = "ui error message">
-        <div className="header">{error}</div>
-      </div>
-    )
+  renderError({error, touched}){
+    if (touched && error) {
+      return (
+        <div className = "ui error message">
+          <div className="header">{error}</div>
+        </div>
+      )
+    }
   }
-}
 
   renderInput = ({ input, label, meta }) =>  {
     const className= `field ${meta.error && meta.touched ? 'error': ''}`;
     console.log(input);
-
     return  (
       <div className={className}>
         <label>{label}</label>
@@ -47,13 +46,10 @@ const validate = (formValues) => {
   if(!formValues.group_name) {
     errors.group_name = 'You must enter a title';
   }
-
   if (!formValues.group_description) {
     errors.group_description = 'You must enter a description';
   }
-
   return errors;
-
 };
 
 export default reduxForm({

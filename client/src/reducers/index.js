@@ -6,7 +6,6 @@ import groupsReducer from './groupsReducer';
 import commentsReducer from './commentsReducer';
 import chatReducer from './chatReducer';
 
-
 export default combineReducers ({
   auth: authReducer,
   form: formReducer,

@@ -8,7 +8,6 @@ export const Comments = ({comments}) => {
     return (
       <Comment.Group size='massive'>
         <Header as='h3' dividing>
-
         </Header>
         <Comment>
           <Comment.Avatar as='a' src='https://react.semantic-ui.com/images/avatar/small/matt.jpg' />
@@ -23,20 +22,10 @@ export const Comments = ({comments}) => {
             </Comment.Actions>
           </Comment.Content>
         </Comment>
-
-
-      </Comment.Group>)
-  });
-  return (
-    <div>{renderComments}</div>
-  )
-}
-// export const Comments = ({comments}) => {
-//
-//
-//   const renderComments = comments.map((comment) => {
-//     return <div>{comment.comment}</div>;
-//   });
-//   return (
-//     <div>{renderComments}</div>
-//   )
+      </Comment.Group>
+    )
+    });
+    return (
+      <div>{renderComments}</div>
+    )
+  }

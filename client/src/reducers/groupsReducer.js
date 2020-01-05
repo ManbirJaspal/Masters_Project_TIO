@@ -8,11 +8,9 @@ import {
 
 
 export default (state = {}, action) => {
-
   switch (action.type) {
     case GET_GROUPS:
        console.log("inside GET_GROUPS in groupsREducer");
-
        return {...state, ..._.mapKeys(action.payload, 'group_id')};
     case CREATE_GROUP:
       return {...state, [action.payload.id]: action.payload };
@@ -26,5 +24,3 @@ export default (state = {}, action) => {
       return state;
   }
 }
-
-//mapKeys is a function from lowdadsh that takes an array and returns an object.

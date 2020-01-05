@@ -18,25 +18,24 @@ class GroupEdit extends React.Component {
   render() {
     if (!this.props.group) {
       return <div>Loading...</div>;
+      }
+      return (
+        <div>
+          <h3>Edit Group</h3>
+          <GroupForm
+            initialValues={_.pick(this.props.group, 'group_name', 'group_description')}
+            onSubmit={this.onSubmit}
+            />
+        </div>
+      );
     }
-
-    return (
-      <div>
-        <h3>Edit Group</h3>
-        <GroupForm
-          initialValues={_.pick(this.props.group, 'group_name', 'group_description')}
-          onSubmit={this.onSubmit}
-        />
-      </div>
-    );
   }
-}
 
-const mapStateToProps = (state, ownProps) => {
-  return { group: state.groups[ownProps.match.params.id] };
-};
+  const mapStateToProps = (state, ownProps) => {
+    return { group: state.groups[ownProps.match.params.id] };
+  };
 
-export default connect(
-  mapStateToProps,
-  { fetchGroup, editGroup }
-)(GroupEdit);
+  export default connect(
+    mapStateToProps,
+    { fetchGroup, editGroup }
+  )(GroupEdit);

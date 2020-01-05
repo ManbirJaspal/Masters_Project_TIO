@@ -30,5 +30,3 @@ export default (state = INITIAL_STATE, action) => {
       return state;
   }
 }
-
-//mapKeys is a function from lowdash that takes an array and returns an object.

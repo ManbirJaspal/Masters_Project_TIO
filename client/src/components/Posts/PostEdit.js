@@ -18,25 +18,24 @@ class PostEdit extends React.Component {
   render() {
     if (!this.props.post) {
       return <div>Loading...</div>;
+      }
+      return (
+        <div>
+          <h3>Edit a Stream</h3>
+          <PostForm
+            initialValues={_.pick(this.props.post, 'title', 'description')}
+            onSubmit={this.onSubmit}
+            />
+        </div>
+      );
     }
-
-    return (
-      <div>
-        <h3>Edit a Stream</h3>
-        <PostForm
-          initialValues={_.pick(this.props.post, 'title', 'description')}
-          onSubmit={this.onSubmit}
-        />
-      </div>
-    );
   }
-}
 
-const mapStateToProps = (state, ownProps) => {
-  return { post: state.posts[ownProps.match.params.id] };
-};
+  const mapStateToProps = (state, ownProps) => {
+    return { post: state.posts[ownProps.match.params.id] };
+  };
 
-export default connect(
-  mapStateToProps,
-  { fetchPost, editPost }
-)(PostEdit);
+  export default connect(
+    mapStateToProps,
+    { fetchPost, editPost }
+  )(PostEdit);

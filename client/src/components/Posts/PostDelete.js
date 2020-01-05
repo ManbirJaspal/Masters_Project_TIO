@@ -12,13 +12,12 @@ class PostDelete extends React.Component {
 
   renderActions() {
     const { id } = this.props.match.params;
-
     return (
       <React.Fragment>
         <button
           onClick={() => this.props.deletePost(this.props.match.params.id)}
           className="ui button negative"
-        >
+          >
           Delete
         </button>
         <Link to="/" className="ui button">
@@ -29,12 +28,9 @@ class PostDelete extends React.Component {
   }
 
   renderContent() {
-    console.log(this.props.post);
     if (!this.props.post) {
-
       return 'Are you sure you want to delete this post?';
     }
-
   }
 
   render() {
@@ -44,7 +40,7 @@ class PostDelete extends React.Component {
         content={this.renderContent()}
         actions={this.renderActions()}
         onDismiss={() => history.push('/groups')}
-      />
+        />
     );
   }
 }

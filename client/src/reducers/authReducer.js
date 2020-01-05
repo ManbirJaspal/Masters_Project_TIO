@@ -8,14 +8,14 @@ const INITIAL_STATE = {
 }
 
 export default (state = INITIAL_STATE, action) => {
-    switch (action.type) {
-      case SIGN_IN:
-        return {...state, isSignedIn: true, userId: action.payload};
-      case SIGN_OUT:
-        return {...state, isSignedIn: false, userId: null, mod: null, mod_id: null};
-      case MOD_SIGN_IN:
-          return {...state, isSignedIn: true, mod: true, mod_id: action.payload};
-      default:
-        return state;
-    }
+  switch (action.type) {
+    case SIGN_IN:
+    return {...state, isSignedIn: true, userId: action.payload};
+    case SIGN_OUT:
+    return {...state, isSignedIn: false, userId: null, mod: null, mod_id: null};
+    case MOD_SIGN_IN:
+    return {...state, isSignedIn: true, mod: true, mod_id: action.payload};
+    default:
+    return state;
+  }
 };

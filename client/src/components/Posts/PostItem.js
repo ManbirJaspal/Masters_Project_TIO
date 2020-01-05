@@ -20,6 +20,4 @@ const PostItem = ({id, text, user, onPostSelect, onGetComments}) => {
   );
 };
 
-
-
 export default PostItem;

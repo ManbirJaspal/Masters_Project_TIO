@@ -8,14 +8,12 @@ import {
   CLEAR_POSTS
 } from '../actions/types';
 
-
 const INITIAL_STATE = {}
 export default (state = INITIAL_STATE, action) => {
 
   switch (action.type) {
     case GET_COMMENTS:
        console.log("inside GET_COMMENTS in commentsREducer");
-
        return {...state, ..._.mapKeys(action.payload, 'comment_id')};
     case CREATE_COMMENT:
       return {...state, [action.payload.id]: action.payload };
